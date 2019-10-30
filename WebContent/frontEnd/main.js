@@ -568,15 +568,16 @@ let JWTInterceptor = class JWTInterceptor {
               Authorization: `Bearer ${this.cookieService.get('accessToken')}`
             }
           });
-        }*/
-        if (this.authenticationService.token !== null) {
-            request = request.clone({
-                withCredentials: true,
-                setHeaders: {
-                    Authorization: `Bearer ${this.authenticationService.token}`
-                }
-            });
         }
+        if (this.authenticationService.token !== null) {
+          request = request.clone({
+            withCredentials: true,
+            setHeaders: {
+              Authorization: `Bearer ${this.authenticationService.token}`
+            }
+          });
+        }
+        */
         return next.handle(request);
     }
 };
