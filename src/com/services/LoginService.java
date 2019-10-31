@@ -25,11 +25,13 @@ public class LoginService {
 		LoginResult loginResult=new LoginResult();
 		userName=((userName==null)?"":userName);
 		password=((password==null)?"":password);
+		loginResult.setResultCode(-1);
 		if (userName.equals("user") && password.equals("password"))
 		{
 			Date expiresAt = new Date(System.currentTimeMillis()+ 24L * 3600L * 1000L);
 			String jws = JWT.create()
 					.withIssuer("auth0")
+					.withClaim("isVip", "isVip")
 	                .withClaim("isAuthenticated", true)
 	                .withExpiresAt(expiresAt)
 	                // 使用了HMAC256加密算法。
@@ -37,6 +39,10 @@ public class LoginService {
 	                .sign(Algorithm.HMAC256("mysecret"));
 			loginResult.setResultCode(0);
 			loginResult.setAccessToken(jws);
+		}
+		else
+		{
+			loginResult.setResultCode(-2);
 		}
 		return Response.ok(loginResult).build();
     }

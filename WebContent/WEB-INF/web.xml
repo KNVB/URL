@@ -16,7 +16,12 @@
   <filter-mapping>
 	<filter-name>AngularFilter</filter-name>
 	<url-pattern>/frontEnd/*</url-pattern>
+  </filter-mapping>  
+  <filter-mapping>
+	<filter-name>AngularFilter</filter-name>
+	<url-pattern>/abc/*</url-pattern>
   </filter-mapping>
+  
   <servlet>
   	<servlet-name>RestfulAPI</servlet-name>
   	<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
