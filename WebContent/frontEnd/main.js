@@ -952,6 +952,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var ngx_cookie_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ngx-cookie-service */ "./node_modules/ngx-cookie-service/ngx-cookie-service.js");
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm2015/common.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm2015/operators/index.js");
+/* harmony import */ var _auth0_angular_jwt__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @auth0/angular-jwt */ "./node_modules/@auth0/angular-jwt/index.js");
+
 
 
 
@@ -993,7 +995,15 @@ let AuthenticationService = class AuthenticationService {
         expiredDate.setHours(23);
         expiredDate.setMinutes(59);
         expiredDate.setSeconds(59);
-        this.cookieService.set('accessToken', token, expiredDate, this.location.prepareExternalUrl(''), document.location.hostname);
+        const helper = new _auth0_angular_jwt__WEBPACK_IMPORTED_MODULE_6__["JwtHelperService"]();
+        const decodedToken = helper.decodeToken(token);
+        // Other functions
+        const expirationDate = helper.getTokenExpirationDate(token);
+        const isExpired = helper.isTokenExpired(token);
+        console.log('expirationDate =' + expirationDate);
+        this.cookieService.set('accessToken', token, 
+        //expiredDate,
+        expirationDate, this.location.prepareExternalUrl(''), document.location.hostname);
     }
 };
 AuthenticationService.ctorParameters = () => [
@@ -1114,7 +1124,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_2__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! E:\Users\cstsang\workspace\Angluar_app\authenticate\src\main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! E:\Users\cstsang\workspace\URL\authenticate\src\main.ts */"./src/main.ts");
 
 
 /***/ })

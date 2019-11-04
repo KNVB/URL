@@ -37,7 +37,7 @@ public class MyLoggingFilter implements ContainerRequestFilter {
 			else {
 				JWTVerifier verifier = JWT.require(Algorithm.HMAC256("mysecret"))
 	                    .withIssuer("auth0")
-	                    .withClaim("isVip", "isVip")
+	                    .withClaim("isVip", "深水埗")
 	                    .build();
 				try {
 					String token=header.split(" ")[1]; 

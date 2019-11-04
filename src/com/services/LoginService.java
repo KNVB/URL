@@ -32,7 +32,7 @@ public class LoginService {
 			Date expiresAt = new Date(System.currentTimeMillis()+ 1000L);
 			String jws = JWT.create()
 					.withIssuer("auth0")
-					.withClaim("isVip", "isVip")
+					.withClaim("isVip", "深水埗")
 	                .withClaim("isAuthenticated", true)
 	                .withExpiresAt(expiresAt)
 	                // 使用了HMAC256加密算法。
