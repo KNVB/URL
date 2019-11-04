@@ -13,6 +13,7 @@ import javax.ws.rs.ext.Provider;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
 import javassist.bytecode.stackmap.TypeData.ClassName;
@@ -41,14 +42,16 @@ public class MyLoggingFilter implements ContainerRequestFilter {
 				try {
 					String token=header.split(" ")[1]; 
 					DecodedJWT jwt = verifier.verify(token);
-					if (System.currentTimeMillis()>jwt.getExpiresAt().getTime()) {
-						result=-2;
-					}
+					
+				}
+				catch (TokenExpiredException t) {
+					result=-2;
 				}
 				catch (Exception ex) {
 					ex.printStackTrace();
 					result=-3;
 				}
+				
 			}
 			if (result<0) {
 				requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity("Unauthorized access").type(MediaType.APPLICATION_JSON).build());

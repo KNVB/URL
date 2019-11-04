@@ -28,7 +28,8 @@ public class LoginService {
 		loginResult.setResultCode(-1);
 		if (userName.equals("user") && password.equals("password"))
 		{
-			Date expiresAt = new Date(System.currentTimeMillis()+ 24L * 3600L * 1000L);
+			//Date expiresAt = new Date(System.currentTimeMillis()+ 24L * 3600L * 1000L);
+			Date expiresAt = new Date(System.currentTimeMillis()+ 1000L);
 			String jws = JWT.create()
 					.withIssuer("auth0")
 					.withClaim("isVip", "isVip")
