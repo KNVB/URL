@@ -497,7 +497,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _admin_routing_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./admin-routing.module */ "./src/app/admin/admin-routing.module.ts");
 /* harmony import */ var _admin_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./admin.component */ "./src/app/admin/admin.component.ts");
 /* harmony import */ var _jwtinterceptor__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./jwtinterceptor */ "./src/app/admin/jwtinterceptor.ts");
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
+/* harmony import */ var _responseinterceptor__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./responseinterceptor */ "./src/app/admin/responseinterceptor.ts");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
+
 
 
 
@@ -514,7 +516,17 @@ AdminModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
             _angular_common__WEBPACK_IMPORTED_MODULE_2__["CommonModule"],
             _admin_routing_module__WEBPACK_IMPORTED_MODULE_3__["AdminRoutingModule"]
         ],
-        providers: [{ provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_6__["HTTP_INTERCEPTORS"], useClass: _jwtinterceptor__WEBPACK_IMPORTED_MODULE_5__["JWTInterceptor"], multi: true }]
+        providers: [
+            { provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_7__["HTTP_INTERCEPTORS"],
+                useClass: _jwtinterceptor__WEBPACK_IMPORTED_MODULE_5__["JWTInterceptor"],
+                multi: true
+            },
+            {
+                provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_7__["HTTP_INTERCEPTORS"],
+                useClass: _responseinterceptor__WEBPACK_IMPORTED_MODULE_6__["ResponseInterceptor"],
+                multi: true
+            }
+        ]
     })
 ], AdminModule);
 
@@ -561,6 +573,45 @@ JWTInterceptor.ctorParameters = () => [
 JWTInterceptor = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])()
 ], JWTInterceptor);
+
+
+
+/***/ }),
+
+/***/ "./src/app/admin/responseinterceptor.ts":
+/*!**********************************************!*\
+  !*** ./src/app/admin/responseinterceptor.ts ***!
+  \**********************************************/
+/*! exports provided: ResponseInterceptor */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ResponseInterceptor", function() { return ResponseInterceptor; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm2015/operators/index.js");
+
+
+
+
+let ResponseInterceptor = class ResponseInterceptor {
+    constructor() { }
+    intercept(req, next) {
+        return next.handle(req).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])((event) => {
+            if (event instanceof _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpResponse"]) {
+                console.log('event', event);
+            }
+            return event;
+        }, (error) => {
+            console.log(error);
+        }));
+    }
+};
+ResponseInterceptor = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"])()
+], ResponseInterceptor);
 
 
 
