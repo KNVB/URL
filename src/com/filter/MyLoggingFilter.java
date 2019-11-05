@@ -10,6 +10,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
+import com.ServerResponse;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -34,9 +35,10 @@ public class MyLoggingFilter implements ContainerRequestFilter {
 			int result=0;
 			String errorMessage=new String();
 			String header=requestContext.getHeaderString("Authorization");
+			ServerResponse sr=new  ServerResponse();
 			if (header==null) {
-				result=-1;
-				errorMessage="Missing Access token";
+				sr.setReturnCode(-1);
+				sr.setErrorMessage("Missing Access token");
 			}
 			else {
 				JWTVerifier verifier = JWT.require(Algorithm.HMAC256("mysecret"))
@@ -49,29 +51,22 @@ public class MyLoggingFilter implements ContainerRequestFilter {
 					
 				}
 				catch (TokenExpiredException t) {
-					result=-2;
-					errorMessage="Session Expired";
+					sr.setReturnCode(-1);
+					sr.setErrorMessage("Session Expired");
 				}
 				catch (JWTVerificationException je) {
-					result=-3;
-					errorMessage="Invalid token";
+					sr.setReturnCode(-1);
+					sr.setErrorMessage("Invalid token");
 				}				
 				catch (Exception ex) {
 					ex.printStackTrace();
-					result=-20;
-					errorMessage=ex.getMessage();
+					sr.setReturnCode(-10);
+					sr.setErrorMessage(ex.getMessage());
 				}
 				
 			}
 			
-			if (result!=0) {
-				requestContext.abortWith(Response.status(Response.Status.OK).entity("{\"errorMessage\":\""+errorMessage+"\",\"returnCode\":\""+result+"\"}").type(MediaType.APPLICATION_JSON).build());
-			}
-			/*
-			if (result<0) {
-				requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity("Unauthorized access").type(MediaType.APPLICATION_JSON).build());
-			}
-			*/
+			requestContext.abortWith(Response.status(Response.Status.OK).entity(sr).type(MediaType.APPLICATION_JSON).build());
 			LOGGER.info("request method="+ requestContext.getMethod()+",path="+requestContext.getUriInfo().getPath()+",token="+requestContext.getHeaderString("Authorization"));
 		}
 	}
