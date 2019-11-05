@@ -383,7 +383,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
 /* harmony import */ var ngx_cookie_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ngx-cookie-service */ "./node_modules/ngx-cookie-service/ngx-cookie-service.js");
-/* harmony import */ var src_app_services_show_cookie_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/services/show-cookie.service */ "./src/app/services/show-cookie.service.ts");
+/* harmony import */ var _services_show_cookie_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../services/show-cookie.service */ "./src/app/services/show-cookie.service.ts");
 /* harmony import */ var _services_authentication_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../services/authentication.service */ "./src/app/services/authentication.service.ts");
 
 
@@ -412,7 +412,7 @@ let AdminComponent = class AdminComponent {
 AdminComponent.ctorParameters = () => [
     { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"] },
     { type: _services_authentication_service__WEBPACK_IMPORTED_MODULE_5__["AuthenticationService"] },
-    { type: src_app_services_show_cookie_service__WEBPACK_IMPORTED_MODULE_4__["ShowCookieService"] },
+    { type: _services_show_cookie_service__WEBPACK_IMPORTED_MODULE_4__["ShowCookieService"] },
     { type: ngx_cookie_service__WEBPACK_IMPORTED_MODULE_3__["CookieService"] }
 ];
 AdminComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
@@ -452,11 +452,7 @@ let AdminGuard = class AdminGuard {
     }
     canActivate(next, state) {
         const canActivate = this.cookieService.check('accessToken');
-        // console.log ('canActivate=' + canActivate);
-        if (canActivate) {
-            console.log(this.cookieService.get('accessToken'));
-        }
-        else {
+        if (!canActivate) {
             this.router.navigate(['/login']);
         }
         return canActivate;
@@ -596,11 +592,7 @@ let AppRoutingModule = class AppRoutingModule {
 };
 AppRoutingModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
-        imports: [
-            _angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"].forRoot(routes, {
-                enableTracing: false
-            }),
-        ],
+        imports: [_angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"].forRoot(routes)],
         exports: [_angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"]]
     })
 ], AppRoutingModule);
@@ -638,7 +630,7 @@ __webpack_require__.r(__webpack_exports__);
 
 let AppComponent = class AppComponent {
     constructor() {
-        this.title = 'authenticate';
+        this.title = 'authentication';
     }
 };
 AppComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
@@ -952,8 +944,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var ngx_cookie_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ngx-cookie-service */ "./node_modules/ngx-cookie-service/ngx-cookie-service.js");
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm2015/common.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm2015/operators/index.js");
-/* harmony import */ var _auth0_angular_jwt__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @auth0/angular-jwt */ "./node_modules/@auth0/angular-jwt/index.js");
-
 
 
 
@@ -995,15 +985,7 @@ let AuthenticationService = class AuthenticationService {
         expiredDate.setHours(23);
         expiredDate.setMinutes(59);
         expiredDate.setSeconds(59);
-        const helper = new _auth0_angular_jwt__WEBPACK_IMPORTED_MODULE_6__["JwtHelperService"]();
-        const decodedToken = helper.decodeToken(token);
-        // Other functions
-        const expirationDate = helper.getTokenExpirationDate(token);
-        const isExpired = helper.isTokenExpired(token);
-        console.log('expirationDate =' + expirationDate);
-        this.cookieService.set('accessToken', token, 
-        //expiredDate,
-        expirationDate, this.location.prepareExternalUrl(''), document.location.hostname);
+        this.cookieService.set('accessToken', token, expiredDate, this.location.prepareExternalUrl(''), document.location.hostname);
     }
 };
 AuthenticationService.ctorParameters = () => [
@@ -1034,6 +1016,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm2015/operators/index.js");
+
 
 
 
@@ -1043,7 +1027,11 @@ let ShowCookieService = class ShowCookieService {
     }
     getCookie() {
         const requestParams = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpParams"]();
-        return this.http.get('../RestfulAPI/ShowKey');
+        return this.http.get('../RestfulAPI/ShowKey')
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])((data) => {
+        }, (error) => {
+            return error;
+        }));
     }
 };
 ShowCookieService.ctorParameters = () => [
@@ -1124,7 +1112,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_2__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! E:\Users\cstsang\workspace\URL\authenticate\src\main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! E:\Users\cstsang\workspace\URL\authentication\src\main.ts */"./src/main.ts");
 
 
 /***/ })
