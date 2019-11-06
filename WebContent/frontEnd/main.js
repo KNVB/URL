@@ -514,7 +514,12 @@ AdminModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
             _angular_common__WEBPACK_IMPORTED_MODULE_2__["CommonModule"],
             _admin_routing_module__WEBPACK_IMPORTED_MODULE_3__["AdminRoutingModule"]
         ],
-        providers: [{ provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_6__["HTTP_INTERCEPTORS"], useClass: _jwtinterceptor__WEBPACK_IMPORTED_MODULE_5__["JWTInterceptor"], multi: true }]
+        providers: [
+            { provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_6__["HTTP_INTERCEPTORS"],
+                useClass: _jwtinterceptor__WEBPACK_IMPORTED_MODULE_5__["JWTInterceptor"],
+                multi: true
+            }
+        ]
     })
 ], AdminModule);
 
@@ -533,8 +538,12 @@ AdminModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "JWTInterceptor", function() { return JWTInterceptor; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-/* harmony import */ var ngx_cookie_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ngx-cookie-service */ "./node_modules/ngx-cookie-service/ngx-cookie-service.js");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var ngx_cookie_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ngx-cookie-service */ "./node_modules/ngx-cookie-service/ngx-cookie-service.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm2015/operators/index.js");
+
+
 
 
 
@@ -543,7 +552,7 @@ let JWTInterceptor = class JWTInterceptor {
         this.cookieService = cookieService;
     }
     intercept(request, next) {
-        console.log('Interceptor Called');
+        console.log(request.url + ' Interceptor Called');
         if (this.cookieService.check('accessToken')) {
             request = request.clone({
                 withCredentials: true,
@@ -552,14 +561,21 @@ let JWTInterceptor = class JWTInterceptor {
                 }
             });
         }
-        return next.handle(request);
+        return next.handle(request).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["map"])((event) => {
+            if (event instanceof _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpResponse"]) {
+                console.log('http response event', event);
+            }
+            return event;
+        }, (error) => {
+            console.log(error);
+        }));
     }
 };
 JWTInterceptor.ctorParameters = () => [
-    { type: ngx_cookie_service__WEBPACK_IMPORTED_MODULE_2__["CookieService"] }
+    { type: ngx_cookie_service__WEBPACK_IMPORTED_MODULE_3__["CookieService"] }
 ];
 JWTInterceptor = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])()
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"])()
 ], JWTInterceptor);
 
 
@@ -1029,6 +1045,7 @@ let ShowCookieService = class ShowCookieService {
         const requestParams = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpParams"]();
         return this.http.get('../RestfulAPI/ShowKey')
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])((data) => {
+            console.log(data);
         }, (error) => {
             return error;
         }));

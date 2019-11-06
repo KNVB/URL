@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import java.util.logging.Logger;
 
+import javax.ws.rs.Produces;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.MediaType;
@@ -29,11 +30,10 @@ public class MyLoggingFilter implements ContainerRequestFilter {
 	}
 
 	@Override
+	@Produces(MediaType.APPLICATION_JSON)
 	public void filter(ContainerRequestContext requestContext) throws IOException {
 		String requestPath = requestContext.getUriInfo().getPath();
 		if (!requestPath.equals("login")) {
-			int result=0;
-			String errorMessage=new String();
 			String header=requestContext.getHeaderString("Authorization");
 			ServerResponse sr=new  ServerResponse();
 			if (header==null) {
@@ -65,8 +65,8 @@ public class MyLoggingFilter implements ContainerRequestFilter {
 				}
 				
 			}
-			
-			requestContext.abortWith(Response.status(Response.Status.OK).entity(sr).type(MediaType.APPLICATION_JSON).build());
+			if (sr.getReturnCode()!=0)
+				requestContext.abortWith(Response.status(Response.Status.BAD_REQUEST).entity(sr).build());
 			LOGGER.info("request method="+ requestContext.getMethod()+",path="+requestContext.getUriInfo().getPath()+",token="+requestContext.getHeaderString("Authorization"));
 		}
 	}

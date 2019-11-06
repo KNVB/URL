@@ -14,6 +14,7 @@ export class ShowCookieService {
     .pipe(
       map(
         (data) => {
+          console.log(data);
         },
       (error: HttpErrorResponse) => {
         return error;

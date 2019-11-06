@@ -6,6 +6,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.ServerResponse;
+
 import javassist.bytecode.stackmap.TypeData.ClassName;
 
 @Path("/ShowKey")
@@ -17,6 +19,8 @@ public class ShowKey {
 	@GET
     @Produces(MediaType.APPLICATION_JSON)
 	public Response show() {
-		return Response.ok("Access Ok").build();
+		ServerResponse sr=new  ServerResponse();
+		sr.setReturnObj("Access Ok");
+		return Response.ok(sr).build();
 	}
 }
