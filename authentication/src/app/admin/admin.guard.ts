@@ -16,15 +16,5 @@ export class AdminGuard implements CanActivate {
         this.router.navigate(['/login']);
       }
       return canActivate;
-/*
-      console.log (state.url, sessionStorage.getItem('isAuthenticated') !== null);
-      const canActivate = (sessionStorage.getItem('isAuthenticated') !== null);
-      if (!canActivate) {
-        this.router.navigate(['/login']);
-      }
-
-      return canActivate;
-      */
   }
-
 }

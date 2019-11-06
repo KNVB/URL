@@ -32,7 +32,7 @@ webpackEmptyAsyncContext.id = "./$$_lazy_route_resource lazy recursive";
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<p>Admin works!</p>\n<a [routerLink]=\"\" (click)=\"showCookie()\">Show Cookie</a><br>\n<a [routerLink]=\"\" (click)=\"logout()\">Logout</a>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<p>Admin works!</p>\r\n<a [routerLink]=\"\" (click)=\"showCookie()\">Show Cookie</a><br>\r\n<a [routerLink]=\"\" (click)=\"logout()\">Logout</a>\r\n");
 
 /***/ }),
 
@@ -45,7 +45,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<router-outlet></router-outlet>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<router-outlet></router-outlet>\r\n");
 
 /***/ }),
 
@@ -58,7 +58,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<div style=\"display:flex;align-items: center;justify-content: center;width:100%\">\n  <form #loginForm=\"ngForm\" (ngSubmit)=\"login(model)\">\n    <table border=\"0\">\n      <tr>\n        <td colspan=\"2\" style=\"text-align:center\">Roster Scheduler Login page</td>\n      </tr>\n      <tr>\n        <td>Login Name:</td>\n        <td>\n            <input type=\"text\" class=\"form-control\" id=\"userName\" required\n            [(ngModel)]=\"model.userName\"\n            name=\"userName\" #userName=\"ngModel\">\n            <div [hidden]=\"userName.valid || userName.pristine\" style='color:red'>\n              Login Name is required\n            </div>\n        </td>\n      </tr>\n      <tr>\n        <td>Password:</td>\n        <td>\n          <input type=\"password\" name=\"password\" required  [(ngModel)]=\"model.password\" #password=\"ngModel\">\n          <div [hidden]=\"password.valid || password.pristine\" style='color:red'>\n              Password is required\n            </div>\n        </td>\n      </tr>\n      <tr>\n        <td colspan=\"2\" style=\"text-align:center\"><input type=\"submit\" value=\"login\"></td>\n      </tr>\n      <tr>\n        <td colspan=\"2\" style=\"text-align:center;color:red\">{{ serverResponse }}</td>\n      </tr>\n    </table>\n  </form>\n</div>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<div style=\"display:flex;align-items: center;justify-content: center;width:100%\">\r\n  <form #loginForm=\"ngForm\" (ngSubmit)=\"login(model)\">\r\n    <table border=\"0\">\r\n      <tr>\r\n        <td colspan=\"2\" style=\"text-align:center\">Roster Scheduler Login page</td>\r\n      </tr>\r\n      <tr>\r\n        <td>Login Name:</td>\r\n        <td>\r\n            <input type=\"text\" class=\"form-control\" id=\"userName\" required\r\n            [(ngModel)]=\"model.userName\"\r\n            name=\"userName\" #userName=\"ngModel\">\r\n            <div [hidden]=\"userName.valid || userName.pristine\" style='color:red'>\r\n              Login Name is required\r\n            </div>\r\n        </td>\r\n      </tr>\r\n      <tr>\r\n        <td>Password:</td>\r\n        <td>\r\n          <input type=\"password\" name=\"password\" required  [(ngModel)]=\"model.password\" #password=\"ngModel\">\r\n          <div [hidden]=\"password.valid || password.pristine\" style='color:red'>\r\n              Password is required\r\n            </div>\r\n        </td>\r\n      </tr>\r\n      <tr>\r\n        <td colspan=\"2\" style=\"text-align:center\"><input type=\"submit\" value=\"login\"></td>\r\n      </tr>\r\n    </table>\r\n  </form>\r\n</div>\r\n");
 
 /***/ }),
 
@@ -71,7 +71,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<p>roster-list works!</p>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<p>roster-list works!</p>\r\n");
 
 /***/ }),
 
@@ -400,8 +400,8 @@ let AdminComponent = class AdminComponent {
     }
     ngOnInit() { }
     showCookie() {
-        this.showCookieService.getCookie().subscribe((data) => { }, (error) => {
-            console.log(error);
+        this.showCookieService.getCookie().subscribe((sr) => {
+            console.log(sr.returnObj);
         });
     }
     logout() {
@@ -456,15 +456,6 @@ let AdminGuard = class AdminGuard {
             this.router.navigate(['/login']);
         }
         return canActivate;
-        /*
-              console.log (state.url, sessionStorage.getItem('isAuthenticated') !== null);
-              const canActivate = (sessionStorage.getItem('isAuthenticated') !== null);
-              if (!canActivate) {
-                this.router.navigate(['/login']);
-              }
-        
-              return canActivate;
-              */
     }
 };
 AdminGuard.ctorParameters = () => [
@@ -538,11 +529,9 @@ AdminModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "JWTInterceptor", function() { return JWTInterceptor; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-/* harmony import */ var ngx_cookie_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ngx-cookie-service */ "./node_modules/ngx-cookie-service/ngx-cookie-service.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm2015/operators/index.js");
-
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var ngx_cookie_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ngx-cookie-service */ "./node_modules/ngx-cookie-service/ngx-cookie-service.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm2015/operators/index.js");
 
 
 
@@ -561,21 +550,16 @@ let JWTInterceptor = class JWTInterceptor {
                 }
             });
         }
-        return next.handle(request).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["map"])((event) => {
-            if (event instanceof _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpResponse"]) {
-                console.log('http response event', event);
-            }
-            return event;
-        }, (error) => {
-            console.log(error);
+        return next.handle(request).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(() => { }, (err) => {
+            console.log(err.status);
         }));
     }
 };
 JWTInterceptor.ctorParameters = () => [
-    { type: ngx_cookie_service__WEBPACK_IMPORTED_MODULE_3__["CookieService"] }
+    { type: ngx_cookie_service__WEBPACK_IMPORTED_MODULE_2__["CookieService"] }
 ];
 JWTInterceptor = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-    Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"])()
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])()
 ], JWTInterceptor);
 
 
@@ -960,6 +944,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var ngx_cookie_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ngx-cookie-service */ "./node_modules/ngx-cookie-service/ngx-cookie-service.js");
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm2015/common.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm2015/operators/index.js");
+/* harmony import */ var _auth0_angular_jwt__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @auth0/angular-jwt */ "./node_modules/@auth0/angular-jwt/index.js");
+
 
 
 
@@ -997,11 +983,9 @@ let AuthenticationService = class AuthenticationService {
         this.cookieService.delete('accessToken', this.location.prepareExternalUrl(''));
     }
     setCookie(token) {
-        const expiredDate = new Date();
-        expiredDate.setHours(23);
-        expiredDate.setMinutes(59);
-        expiredDate.setSeconds(59);
-        this.cookieService.set('accessToken', token, expiredDate, this.location.prepareExternalUrl(''), document.location.hostname);
+        const helper = new _auth0_angular_jwt__WEBPACK_IMPORTED_MODULE_6__["JwtHelperService"]();
+        const expirationDate = helper.getTokenExpirationDate(token);
+        this.cookieService.set('accessToken', token, expirationDate, this.location.prepareExternalUrl(''), document.location.hostname);
     }
 };
 AuthenticationService.ctorParameters = () => [
@@ -1032,8 +1016,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm2015/operators/index.js");
-
 
 
 
@@ -1043,12 +1025,7 @@ let ShowCookieService = class ShowCookieService {
     }
     getCookie() {
         const requestParams = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpParams"]();
-        return this.http.get('../RestfulAPI/ShowKey')
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])((data) => {
-            console.log(data);
-        }, (error) => {
-            return error;
-        }));
+        return this.http.get('../RestfulAPI/ShowKey');
     }
 };
 ShowCookieService.ctorParameters = () => [

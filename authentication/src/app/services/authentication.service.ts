@@ -5,7 +5,7 @@ import {Location} from '@angular/common';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { AuthenResult } from './authen-result';
-
+import { JwtHelperService } from '@auth0/angular-jwt';
 @Injectable({
   providedIn: 'root'
 })
@@ -45,12 +45,10 @@ export class AuthenticationService {
     this.cookieService.delete('accessToken', this.location.prepareExternalUrl(''));
   }
   setCookie(token: string) {
-    const expiredDate = new Date();
-    expiredDate.setHours(23);
-    expiredDate.setMinutes(59);
-    expiredDate.setSeconds(59);
+    const helper = new JwtHelperService();
+    const expirationDate = helper.getTokenExpirationDate(token);
     this.cookieService.set('accessToken', token,
-    expiredDate,
+    expirationDate,
     this.location.prepareExternalUrl(''),
     document.location.hostname);
   }

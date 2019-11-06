@@ -1,8 +1,8 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
-import { map } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class JWTInterceptor implements HttpInterceptor {
@@ -18,16 +18,9 @@ export class JWTInterceptor implements HttpInterceptor {
                   }
                 });
               }
-              return next.handle(request).pipe(
-                map((event: HttpEvent<any>) => {
-                        if (event instanceof HttpResponse) {
-                            console.log('http response event', event);
-                        }
-                        return event;
-                    },
-                    (error: HttpErrorResponse) => {
-                        console.log(error);
-                    })
-                );
+              return next.handle(request).pipe(tap(() => {},
+                (err: HttpErrorResponse) => {
+                  console.log(err.status);
+              }));
     }
 }

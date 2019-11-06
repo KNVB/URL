@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { ShowCookieService } from '../services/show-cookie.service';
 import { AuthenticationService } from '../services/authentication.service';
-
+import { ServerResponse } from '../services/server-response';
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
@@ -19,9 +19,8 @@ export class AdminComponent implements OnInit {
   ngOnInit() {  }
   showCookie() {
     this.showCookieService.getCookie().subscribe(
-      (data: any) => {},
-      (error: Error) => {
-        console.log (error);
+      (sr: ServerResponse) => {
+        console.log(sr.returnObj);
       }
     );
   }
