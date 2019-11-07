@@ -1,5 +1,5 @@
 export class ServerResponse {
     public errorMessage: string;
-    public resultCode: number;
+    public returnCode: number;
     public returnObj: object;
 }

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { ShowCookieService } from '../services/show-cookie.service';
 import { AuthenticationService } from '../services/authentication.service';
@@ -11,7 +10,7 @@ import { ServerResponse } from '../services/server-response';
 })
 export class AdminComponent implements OnInit {
 
-  constructor(private router: Router,
+  constructor(
               private authenticationService: AuthenticationService,
               private showCookieService: ShowCookieService,
               private cookieService: CookieService) { }

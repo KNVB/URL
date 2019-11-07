@@ -15,7 +15,6 @@ import com.ServerResponse;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.InvalidClaimException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
@@ -33,7 +32,7 @@ public class MyLoggingFilter implements ContainerRequestFilter {
 	@Produces(MediaType.APPLICATION_JSON)
 	public void filter(ContainerRequestContext requestContext) throws IOException {
 		String requestPath = requestContext.getUriInfo().getPath();
-		if (!requestPath.equals("login")) {
+		if (requestPath.startsWith("Admin/")) {
 			String header=requestContext.getHeaderString("Authorization");
 			ServerResponse sr=new  ServerResponse();
 			if (header==null) {
@@ -69,6 +68,8 @@ public class MyLoggingFilter implements ContainerRequestFilter {
 				requestContext.abortWith(Response.status(Response.Status.BAD_REQUEST).entity(sr).build());
 			LOGGER.info("request method="+ requestContext.getMethod()+",path="+requestContext.getUriInfo().getPath()+",token="+requestContext.getHeaderString("Authorization"));
 		}
+		else
+			LOGGER.info("request method="+ requestContext.getMethod()+",path="+requestContext.getUriInfo().getPath());	
 	}
 
 }

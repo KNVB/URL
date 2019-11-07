@@ -71,7 +71,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<p>roster-list works!</p>\r\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<p>roster-list works!</p>\r\n<a href=\"javascript:void(0)\" (click)=\"sayHello()\">Say Hello</a><br>\r\n");
 
 /***/ }),
 
@@ -381,19 +381,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AdminComponent", function() { return AdminComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
-/* harmony import */ var ngx_cookie_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ngx-cookie-service */ "./node_modules/ngx-cookie-service/ngx-cookie-service.js");
-/* harmony import */ var _services_show_cookie_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../services/show-cookie.service */ "./src/app/services/show-cookie.service.ts");
-/* harmony import */ var _services_authentication_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../services/authentication.service */ "./src/app/services/authentication.service.ts");
-
+/* harmony import */ var ngx_cookie_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ngx-cookie-service */ "./node_modules/ngx-cookie-service/ngx-cookie-service.js");
+/* harmony import */ var _services_show_cookie_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../services/show-cookie.service */ "./src/app/services/show-cookie.service.ts");
+/* harmony import */ var _services_authentication_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../services/authentication.service */ "./src/app/services/authentication.service.ts");
 
 
 
 
 
 let AdminComponent = class AdminComponent {
-    constructor(router, authenticationService, showCookieService, cookieService) {
-        this.router = router;
+    constructor(authenticationService, showCookieService, cookieService) {
         this.authenticationService = authenticationService;
         this.showCookieService = showCookieService;
         this.cookieService = cookieService;
@@ -410,10 +407,9 @@ let AdminComponent = class AdminComponent {
     }
 };
 AdminComponent.ctorParameters = () => [
-    { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"] },
-    { type: _services_authentication_service__WEBPACK_IMPORTED_MODULE_5__["AuthenticationService"] },
-    { type: _services_show_cookie_service__WEBPACK_IMPORTED_MODULE_4__["ShowCookieService"] },
-    { type: ngx_cookie_service__WEBPACK_IMPORTED_MODULE_3__["CookieService"] }
+    { type: _services_authentication_service__WEBPACK_IMPORTED_MODULE_4__["AuthenticationService"] },
+    { type: _services_show_cookie_service__WEBPACK_IMPORTED_MODULE_3__["ShowCookieService"] },
+    { type: ngx_cookie_service__WEBPACK_IMPORTED_MODULE_2__["CookieService"] }
 ];
 AdminComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -532,31 +528,47 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
 /* harmony import */ var ngx_cookie_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ngx-cookie-service */ "./node_modules/ngx-cookie-service/ngx-cookie-service.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm2015/operators/index.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
+
 
 
 
 
 let JWTInterceptor = class JWTInterceptor {
-    constructor(cookieService) {
+    constructor(cookieService, router) {
         this.cookieService = cookieService;
+        this.router = router;
     }
     intercept(request, next) {
-        console.log(request.url + ' Interceptor Called');
-        if (this.cookieService.check('accessToken')) {
-            request = request.clone({
-                withCredentials: true,
-                setHeaders: {
-                    Authorization: `Bearer ${this.cookieService.get('accessToken')}`
-                }
-            });
+        if (request.url.indexOf('/RestfulAPI/Admin/') > -1) {
+            if (this.cookieService.check('accessToken')) {
+                request = request.clone({
+                    withCredentials: true,
+                    setHeaders: {
+                        Authorization: `Bearer ${this.cookieService.get('accessToken')}`
+                    }
+                });
+            }
         }
         return next.handle(request).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(() => { }, (err) => {
-            console.log(err.status);
+            const sr = err.error;
+            console.log(sr);
+            switch (sr.returnCode) {
+                case -1:
+                    alert('Session Expired.');
+                    this.router.navigate(['/login']);
+                    break;
+                case -10:
+                    alert('Unknow Error.');
+                    break;
+            }
+            console.log(sr.errorMessage);
         }));
     }
 };
 JWTInterceptor.ctorParameters = () => [
-    { type: ngx_cookie_service__WEBPACK_IMPORTED_MODULE_2__["CookieService"] }
+    { type: ngx_cookie_service__WEBPACK_IMPORTED_MODULE_2__["CookieService"] },
+    { type: _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"] }
 ];
 JWTInterceptor = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])()
@@ -909,13 +921,29 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RosterListComponent", function() { return RosterListComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var ngx_cookie_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ngx-cookie-service */ "./node_modules/ngx-cookie-service/ngx-cookie-service.js");
+/* harmony import */ var _services_say_hello_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../services/say-hello.service */ "./src/app/services/say-hello.service.ts");
+
+
 
 
 let RosterListComponent = class RosterListComponent {
-    constructor() { }
+    constructor(sayHelloService, cookieService) {
+        this.sayHelloService = sayHelloService;
+        this.cookieService = cookieService;
+    }
     ngOnInit() {
     }
+    sayHello() {
+        this.sayHelloService.sayHello().subscribe((sr) => {
+            alert(sr.returnObj);
+        });
+    }
 };
+RosterListComponent.ctorParameters = () => [
+    { type: _services_say_hello_service__WEBPACK_IMPORTED_MODULE_3__["SayHelloService"] },
+    { type: ngx_cookie_service__WEBPACK_IMPORTED_MODULE_2__["CookieService"] }
+];
 RosterListComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
         selector: 'app-roster-list',
@@ -1003,6 +1031,43 @@ AuthenticationService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 
 /***/ }),
 
+/***/ "./src/app/services/say-hello.service.ts":
+/*!***********************************************!*\
+  !*** ./src/app/services/say-hello.service.ts ***!
+  \***********************************************/
+/*! exports provided: SayHelloService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SayHelloService", function() { return SayHelloService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
+
+
+
+let SayHelloService = class SayHelloService {
+    constructor(http) {
+        this.http = http;
+    }
+    sayHello() {
+        return this.http.get('../RestfulAPI/SayHello');
+    }
+};
+SayHelloService.ctorParameters = () => [
+    { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"] }
+];
+SayHelloService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+        providedIn: 'root'
+    })
+], SayHelloService);
+
+
+
+/***/ }),
+
 /***/ "./src/app/services/show-cookie.service.ts":
 /*!*************************************************!*\
   !*** ./src/app/services/show-cookie.service.ts ***!
@@ -1024,8 +1089,7 @@ let ShowCookieService = class ShowCookieService {
         this.http = http;
     }
     getCookie() {
-        const requestParams = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpParams"]();
-        return this.http.get('../RestfulAPI/ShowKey');
+        return this.http.get('../RestfulAPI/Admin/ShowKey');
     }
 };
 ShowCookieService.ctorParameters = () => [
