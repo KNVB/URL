@@ -7,19 +7,24 @@ import { AdminModule } from './admin/admin.module';
 import { LoginModule } from './login/login.module';
 import { CookieService } from 'ngx-cookie-service';
 import { RosterListComponent } from './roster-list/roster-list.component';
+import { RosterMonthPickerComponent } from './components/roster-month-picker/roster-month-picker.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RosterListComponent,
+    RosterMonthPickerComponent,
+
   ],
   imports: [
     BrowserModule,
     AdminModule,
     AppRoutingModule,
     HttpClientModule,
-    LoginModule
+    LoginModule,
   ],
+  exports : [],
+
   providers: [CookieService],
   bootstrap: [AppComponent]
 })
